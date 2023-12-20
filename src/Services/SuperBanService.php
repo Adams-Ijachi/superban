@@ -53,9 +53,10 @@ class SuperBanService implements SuperBanServiceContract
 
         $key = $this->getBannedObjectKey($key);
 
-        $added = $this->cache->add($key,
-            $this->availableAt($minutes_to_ban * 60),
-        $minutes_to_ban * 60);
+        $added = $this->cache->add(
+            $key,
+            $this->availableAt((int)($minutes_to_ban * 60)),
+            (int)$minutes_to_ban * 60);
 
         if (!$added) {
             throw new UserBannedException('User is banned', 403);
