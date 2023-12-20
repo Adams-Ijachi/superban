@@ -1,36 +1,41 @@
 {
-  "name": "juststeveking/laravel-data-object-tools",
-  "description": "A set of tools to make working with Data Transfer Objects easier in Laravel",
+  "name": "piusadams/superban",
+  "description": "A Laravel package to ban users by IP address, email address, or id.",
   "type": "library",
   "license": "MIT",
   "authors": [
     {
       "role": "Developer",
-      "name": "Steve McDougall",
-      "email": "juststevemcd@gmail.com",
-      "homepage": "https://www.juststeveking.uk/"
+      "name": "Pius Adams",
+      "email": "ijachipius8@gmail.com",
     }
   ],
   "autoload": {
     "psr-4": {
-      "JustSteveKing\\DataObjects\\": "src/"
+      "PiusAdams\\SuperBan\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "JustSteveKing\\DataObjects\\Tests\\": "tests/"
+      "PiusAdams\\SuperBan\\Tests\\": "tests/"
     }
   },
   "require": {
-    "php": "^8.1"
+    "php": "^7.4|^8.0",
+    "illuminate/support": "^10.38"
   },
-  "require-dev": {},
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
     "sort-packages": true,
     "preferred-install": "dist",
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "require-dev": {
+    "pestphp/pest": "^2.28",
+    "orchestra/testbench": "^6.0|^7.0|^8.0"
   }
 }
-
