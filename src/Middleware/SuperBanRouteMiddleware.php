@@ -23,7 +23,10 @@ class SuperBanRouteMiddleware
     {
 
         $key = $request->user()?->id
-            ?? $request->ip() ?? $request->user()?->email;
+            ?? $request->ip()
+            ?? $request->user()?->email ;
+
+        $key = $key ."_". $request->route()->uri() ."_". $request->method();
 
         if (SuperBan::isBanned($key)) {
             throw new UserBannedException('User is banned');

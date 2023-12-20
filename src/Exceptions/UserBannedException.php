@@ -6,5 +6,6 @@ use Exception;
 
 class UserBannedException extends Exception
 {
+    protected $code = 403;
 
 }

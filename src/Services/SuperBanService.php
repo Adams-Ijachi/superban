@@ -8,6 +8,7 @@ use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use PiusAdams\SuperBan\Exceptions\UserBannedException;
 use PiusAdams\SuperBan\Contracts\SuperBanServiceContract;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class SuperBanService implements SuperBanServiceContract
 {
@@ -29,6 +30,7 @@ class SuperBanService implements SuperBanServiceContract
      * Determine if the given key is banned.
      * @param $key
      * @return bool
+     * @throws InvalidArgumentException
      */
     final public function isBanned($key): bool
     {
@@ -56,11 +58,14 @@ class SuperBanService implements SuperBanServiceContract
         $minutes_to_ban * 60);
 
         if (!$added) {
-            throw new UserBannedException('User is banned');
+            throw new UserBannedException('User is banned', 403);
         }
 
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     final public function isExpired($key): bool
     {
         $seconds_user_should_be_banned = $this->cache->get($key); // in unix
