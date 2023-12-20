@@ -1,8 +1,10 @@
-# A Laravel Package that let's you ban users from your applications
+# SuperBan
 
 The package provides a middleware called `superban` that you can use to ban users from your application. The middleware checks if the user is banned and if so, it throws a `UserBannedException` which you can catch in your `app/Exceptions/Handler.php` file and redirect the user to a page of your choice.
 
+## How it works
 
+The laravel `RateLimiter` class is used by the middleware to count how many times the user tries to access the resource within a certain time period. If the user goes beyond the limit, the middleware creates a key based on the user's Email, ID or IP address and saves it in the cache for that time period. The middleware then looks for the key in the cache and if it finds it, it raises a `UserBannedException`.
 ## Example
 
 The `superban` middleware takes 3 parameters:

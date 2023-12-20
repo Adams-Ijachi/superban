@@ -3,6 +3,7 @@
   "description": "A Laravel package to ban users by IP address, email address, or id.",
   "type": "library",
   "license": "MIT",
+  "homepage": "https://github.com/Adams-Ijachi/superban",
   "authors": [
     {
       "role": "Developer",
