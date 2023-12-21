@@ -17,14 +17,22 @@ class SuperBanCacheStoreTest extends TestCase
     }
 
 
-    // test that the cache store is set to what is in the config file
+    /**
+     * Test that the cache store is set to what is in the config file.
+     *
+     * @return void
+     */
     public function testCacheStoreIsSet()
     {
         $this->assertEquals(config('superban.cache_driver'),
             app(SuperBanCacheService::class)->getDefaultDriver());
     }
 
-    // if the cache store is set to file, test that the file cache store is used
+    /**
+     * Test if the file cache store is used when the cache store is set to file.
+     *
+     * @return void
+     */
     public function testFileCacheStoreIsUsed()
     {
         // set the cache store to file
