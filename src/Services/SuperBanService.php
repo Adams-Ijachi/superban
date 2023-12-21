@@ -40,15 +40,16 @@ class SuperBanService implements SuperBanServiceContract
         $this->cache = $cache;
     }
 
+
     /**
-     * Determine if the given key is banned.
-     * @param $key
-     * @return bool
+     * Checks if a user is banned.
+     *
+     * @param mixed $key The key to identify the user.
+     * @return bool Returns true if the user is banned, false otherwise.
      */
     final public function isBanned($key): bool
     {
         $seconds_user_should_be_banned = $this->cache->get($key); // in unix
-
 
         if (!is_null($seconds_user_should_be_banned) >= $this->currentTime()) {
             return true;
@@ -58,20 +59,29 @@ class SuperBanService implements SuperBanServiceContract
     }
 
     /**
-     * @throws Exception
+     * Ban a user for a specified time period.
+     *
+     * @param string $key The key to identify the user.
+     * @param int $banTimeInSeconds The duration of the ban in seconds.
+     * @throws Exception If the user is already banned.
+     * @throws UserBannedException If the user is banned.
      */
-    final public function ban($key,int $banTimeInSeconds): void
+    final public function ban($key, int $banTimeInSeconds): void
     {
-
         $added = $this->cache->add($key, $this->availableAt($banTimeInSeconds), $banTimeInSeconds);
 
         if (!$added) {
             throw new UserBannedException('User is banned', 403);
         }
-
     }
 
 
+    /**
+     * Get the resolved key based on the request.
+     *
+     * @param Request $request The request object.
+     * @return string The resolved key.
+     */
     final public function getResolvedKey(Request $request): string
     {
         $identity_key = config('superban.identity_key');
@@ -85,8 +95,8 @@ class SuperBanService implements SuperBanServiceContract
         }
 
         $key = $identity_key ."_". $request->route()->uri() ."_". $request->method();
-
         return md5($key);
-
     }
+
+
 }

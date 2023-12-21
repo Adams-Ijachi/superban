@@ -9,6 +9,9 @@ use PiusAdams\SuperBan\Services\SuperBanCacheService;
 use PiusAdams\SuperBan\Services\SuperBanService;
 use Illuminate\Support\ServiceProvider as PackageServiceProvider;
 
+/**
+ * The SuperBanServiceProvider class is responsible for bootstrapping the SuperBan package.
+ */
 class SuperBanServiceProvider extends PackageServiceProvider
 {
 
