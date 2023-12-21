@@ -45,7 +45,7 @@ class SuperBanRouteMiddleware
             throw new UserBannedException('User is banned');
         }
 
-        $executed = RateLimiter::attempt($rateLimiterKey,$max_number_of_attempts , fn () => true,
+        $executed = RateLimiter::attempt($rateLimiterKey,$max_number_of_attempts - 1 , fn () => true,
             $interval_in_seconds
         );
 
