@@ -21,9 +21,15 @@
       "PiusAdams\\SuperBan\\Tests\\": "tests/"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "PiusAdams\\SuperBan\\Providers\\SuperBanServiceProvider"
+      ]
+    }
+  },
   "require": {
-    "php": "^7.4|^8.0",
-    "illuminate/support": "^10.38"
+    "php": "^8.0"
   },
   "minimum-stability": "stable",
   "prefer-stable": true,
