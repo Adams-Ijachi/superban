@@ -2,6 +2,30 @@
 
 The package provides a middleware called `superban` that you can use to ban users from your application. The middleware checks if the user is banned and if so, it throws a `UserBannedException` which you can catch in your `app/Exceptions/Handler.php` file and redirect the user to a page of your choice.
 
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require piusadams/superban
+```
+
+You can manually add the service provider to the `providers` array in `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    PiusAdams\SuperBan\Providers\SuperBanServiceProvider::class,
+];
+```
+
+Discover the package:
+You can publish the config file with:
+
+```bash
+php artisan vendor:publish --provider="PiusAdams\SuperBan\Providers\SuperBanServiceProvider"  
+```
+
 ## How it works
 
 The laravel `RateLimiter` class is used by the middleware to count how many times the user tries to access the resource within a certain time period. If the user goes beyond the limit, the middleware creates a key based on the user's Email, ID or IP address and saves it in the cache for that time period. The middleware then looks for the key in the cache and if it finds it, it raises a `UserBannedException`.
@@ -36,7 +60,6 @@ The command above will run the tests for the package.
 6. `testFileCacheStoreIsUsed` - This test checks if the file cache store is used.
 7. `testSuperBanServiceIsBannedReturnsTrue` - This test checks if the `isBanned` method of the `SuperBanService` class returns true when the user is banned.
 8. `testSuperBanServiceIsBannedReturnsFalse` - This test checks if the `isBanned` method of the `SuperBanService` class returns false when the user is not banned.
-
 
 ## Exceptions
 
