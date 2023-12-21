@@ -23,7 +23,11 @@ In the above example, the user can try to access the `/home` route 2 times in 3 
 ## Testing
 
 You can run the tests with:
+Here are a list of tests that are run:
+
+Su
 
 ```bash
 vendor/bin/phpunit
 ```
+
