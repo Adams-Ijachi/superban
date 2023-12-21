@@ -10,6 +10,7 @@ use PiusAdams\SuperBan\Contracts\SuperBanServiceContract;
 /**
  * @method static bool isBanned($ip)
  * @method static void ban($ip, $minutes_to_ban)
+ * @method static getResolvedKey($request)
  * @see \PiusAdams\SuperBan\Services\SuperBanService
  */
 class SuperBan extends Facade

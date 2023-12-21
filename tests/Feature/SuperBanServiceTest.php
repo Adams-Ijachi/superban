@@ -33,8 +33,7 @@ class SuperBanServiceTest extends TestCase
 
     public function testSuperBanServiceIsBannedReturnsFalse()
     {
-
-        $this->assertFalse($this->superbanService->isBanned('testKey'));
+        $this->assertFalse($this->superbanService->isBanned('testKey1'));
     }
 
 

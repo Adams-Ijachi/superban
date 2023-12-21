@@ -3,6 +3,7 @@
 namespace PiusAdams\SuperBan\Contracts;
 
 use Exception;
+use Illuminate\Http\Request;
 
 interface SuperBanServiceContract
 {
@@ -17,11 +18,9 @@ interface SuperBanServiceContract
     /**
      * @throws Exception
      */
-    public function ban($key, $minutes_to_ban): void;
+    public function ban($key, int $banTimeInSeconds): void;
 
 
-    public function isExpired($key): bool;
-
-    public function getBannedObjectKey($key): string;
+    public function getResolvedKey(Request $request): string;
 
 }

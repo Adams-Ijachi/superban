@@ -4,11 +4,20 @@ declare(strict_types=1);
 namespace PiusAdams\SuperBan\Services;
 
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\InteractsWithTime;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use PiusAdams\SuperBan\Exceptions\UserBannedException;
 use PiusAdams\SuperBan\Contracts\SuperBanServiceContract;
-use Psr\SimpleCache\InvalidArgumentException;
+
+/**
+ * SuperBanService class
+ *
+ * This class provides functionality for banning and checking if a key is banned.
+ * It implements the SuperBanServiceContract interface.
+ *
+ * @package PiusAdams\SuperBan\Services
+ */
 
 class SuperBanService implements SuperBanServiceContract
 {
@@ -19,9 +28,14 @@ class SuperBanService implements SuperBanServiceContract
      * @var Cache
      */
 
-    protected Cache $cache;
+    const EMAIL_KEY = 'email';
+    const IP_KEY = 'ip';
+    const USER_ID_KEY = 'id';
 
-    public function __construct(Cache $cache)
+    private SuperBanCacheService $cache;
+
+
+    public function __construct(SuperBanCacheService $cache)
     {
         $this->cache = $cache;
     }
@@ -30,13 +44,11 @@ class SuperBanService implements SuperBanServiceContract
      * Determine if the given key is banned.
      * @param $key
      * @return bool
-     * @throws InvalidArgumentException
      */
     final public function isBanned($key): bool
     {
-        $key = $this->getBannedObjectKey($key);
-
         $seconds_user_should_be_banned = $this->cache->get($key); // in unix
+
 
         if (!is_null($seconds_user_should_be_banned) >= $this->currentTime()) {
             return true;
@@ -48,15 +60,10 @@ class SuperBanService implements SuperBanServiceContract
     /**
      * @throws Exception
      */
-    final public function ban($key, $minutes_to_ban): void
+    final public function ban($key,int $banTimeInSeconds): void
     {
 
-        $key = $this->getBannedObjectKey($key);
-
-        $added = $this->cache->add(
-            $key,
-            $this->availableAt((int)($minutes_to_ban * 60)),
-            (int)$minutes_to_ban * 60);
+        $added = $this->cache->add($key, $this->availableAt($banTimeInSeconds), $banTimeInSeconds);
 
         if (!$added) {
             throw new UserBannedException('User is banned', 403);
@@ -64,27 +71,22 @@ class SuperBanService implements SuperBanServiceContract
 
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
-    final public function isExpired($key): bool
-    {
-        $seconds_user_should_be_banned = $this->cache->get($key); // in unix
 
-        if ($seconds_user_should_be_banned === null) {
-            return true;
+    final public function getResolvedKey(Request $request): string
+    {
+        $identity_key = config('superban.identity_key');
+
+        if ($identity_key == self::EMAIL_KEY && $request->user()) {
+            $identity_key = $request->user()->email;
+        } elseif ($identity_key == self::USER_ID_KEY && $request->user()) {
+            $identity_key = $request->user()->id;
+        } elseif ($identity_key == self::IP_KEY) {
+            $identity_key = $request->getClientIp();
         }
 
-        if ($seconds_user_should_be_banned >= $this->currentTime()) {
-            return true;
-        }
+        $key = $identity_key ."_". $request->route()->uri() ."_". $request->method();
 
-        return false;
+        return md5($key);
+
     }
-
-    public function getBannedObjectKey($key): string
-    {
-        return 'superban_' . $key;
-    }
-
 }
