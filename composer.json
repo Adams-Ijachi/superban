@@ -25,6 +25,7 @@
     "php": "^7.4|^8.0",
     "illuminate/support": "^10.38"
   },
+  "minimum-stability": "stable",
   "prefer-stable": true,
   "config": {
     "sort-packages": true,
