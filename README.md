@@ -25,6 +25,18 @@ You can publish the config file with:
 ```bash
 php artisan vendor:publish --provider="PiusAdams\SuperBan\Providers\SuperBanServiceProvider"  
 ```
+This is the contents of the published config file:
+
+```php
+return [
+    'cache_driver' => env('SUPERBAN_CACHE_DRIVER', 'file'),
+    'identity_key' => env('SUPERBAN_IDENTITY_KEY', 'ip'),
+];
+```
+
+The `cache_driver` option is the cache store that will be used to store the keys. The default is `file` but you can change it to any of the cache stores that Laravel supports.
+
+The `identity_key` option is the key that will be used to identify the user. The default is `ip` but you can change it to `email` or `id`, and if the user is logged in, the middleware will use the user's email or ID to identify the user.
 
 ## How it works
 
